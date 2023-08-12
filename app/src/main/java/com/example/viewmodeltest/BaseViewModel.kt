@@ -1,15 +1,10 @@
 package com.example.viewmodeltest
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,6 +24,10 @@ class BaseViewModel @Inject constructor(
         _count.value--
     }
 
+    fun resetCount() = viewModelScope.launch {
+        _count.value = 0
+    }
+
     override fun onCleared() {
         super.onCleared()
         Log.d("BaseViewModel", "onCleared()")
@@ -42,7 +41,6 @@ class BaseViewModelFactory @Inject constructor() : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(BaseViewModel::class.java)) {
             return BaseViewModel() as T
         }
-        throw IllegalArgumentException("잘못된 ViewModel 클래스")
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
-
 }
