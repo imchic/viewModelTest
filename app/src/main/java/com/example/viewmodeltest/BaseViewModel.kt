@@ -11,21 +11,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BaseViewModel @Inject constructor(
+    private val repository: BaseRepository
 ) : ViewModel() {
 
     private val _count = MutableStateFlow(0)
     val count = _count
 
     fun increaseCount() = viewModelScope.launch {
-        _count.value++
+        _count.value = repository.increaseCount(_count.value)
     }
 
     fun decreaseCount() = viewModelScope.launch {
-        _count.value--
+        _count.value = repository.decreaseCount(_count.value)
     }
 
     fun resetCount() = viewModelScope.launch {
-        _count.value = 0
+        _count.value = repository.resetCount()
     }
 
     override fun onCleared() {
@@ -39,7 +40,9 @@ class BaseViewModelFactory @Inject constructor() : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(BaseViewModel::class.java)) {
-            return BaseViewModel() as T
+            return BaseViewModel(
+                repository = BaseRepository()
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
