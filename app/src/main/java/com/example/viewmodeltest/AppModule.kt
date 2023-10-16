@@ -1,23 +1,27 @@
 package com.example.viewmodeltest
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
+import javax.inject.Provider
+
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 object AppModule {
+
     @Provides
     fun provideSavedStateHandle(): SavedStateHandle {
         return SavedStateHandle()
     }
 
     @Provides
-    fun provideViewModelFactory(factory: BaseViewModelFactory): ViewModelProvider.Factory {
-        return factory
+    fun provideApiService(): ApiService {
+        return ApiService.create()
     }
 
 }
