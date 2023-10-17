@@ -2,7 +2,6 @@ package com.example.viewmodeltest
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import timber.log.Timber
 import javax.inject.Inject
 
 class BaseRepository @Inject constructor(
@@ -16,30 +15,27 @@ class BaseRepository @Inject constructor(
     fun decreaseCount() {
         getCount.value = getCount.value?.minus(1)
     }
-    suspend fun getCoffeeList() {
-        apiService.getCoffeeList().apply {
-            if (isSuccessful){
-                body()?.forEach {
-                    Timber.d("getCoffeList: $it")
-                }
+    suspend fun getIceCoffeeList(): List<Coffee> {
+        apiService.getIceCoffeeList().apply {
+            return if (isSuccessful){
+                body() ?: emptyList()
             } else {
-                Timber.d("getCoffeList: ${errorBody()}")
+                Log.d("BaseRepository", "getCoffeList: ${errorBody()}")
+                emptyList()
             }
         }
     }
 
-    // convert livedata
-//    suspend fun getCoffeList(): LiveData<List<Coffee>> {
-//        val result = MutableLiveData<List<Coffee>>()
-//        apiService.getCoffeeList().apply {
-//            if (isSuccessful){
-//                result.value = body()
-//            } else {
-//                Log.d("BaseRepository", "getCoffeList: ${errorBody()}")
-//            }
-//        }
-//        return result
-//    }
+    suspend fun getHotCoffeeList(): List<Coffee> {
+        apiService.getHotCoffeeList().apply {
+            return if (isSuccessful){
+                body() ?: emptyList()
+            } else {
+                Log.d("BaseRepository", "getCoffeList: ${errorBody()}")
+                emptyList()
+            }
+        }
+    }
 
 
 }

@@ -10,7 +10,10 @@ import java.util.concurrent.TimeUnit
 interface ApiService {
 
     @GET("iced")
-    suspend fun getCoffeeList(): Response<List<Coffee>>
+    suspend fun getIceCoffeeList(): Response<List<Coffee>>
+
+    @GET("hot")
+    suspend fun getHotCoffeeList(): Response<List<Coffee>>
 
     companion object {
 
