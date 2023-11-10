@@ -1,9 +1,9 @@
-name: Our Workflow
+name: Checkout Repository
 
 on:
   push:
     branches:
-      - development  # 디벨로프먼트 브랜치로 push 이벤트가 발생할 때
+      - main  # 또는 원하는 브랜치
 
 jobs:
   checkout:
@@ -12,10 +12,3 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-      
-    - name: Switch to Master Branch
-      run: |
-        git checkout master
-        git merge development  # 디벨로프먼트 브랜치를 마스터 브랜치로 병합
-        git push origin master  # 변경된 마스터 브랜치를 푸시
-      
