@@ -6,7 +6,7 @@ on:
       - development  # 디벨로프먼트 브랜치로 push 이벤트가 발생할 때
 
 jobs:
-  move-to-master:
+  checkout:
     runs-on: ubuntu-latest
     
     steps:
