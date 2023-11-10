@@ -1,8 +1,21 @@
 name: Our Workflow
-on: push
+
+on:
+  push:
+    branches:
+      - development  # 디벨로프먼트 브랜치로 push 이벤트가 발생할 때
+
 jobs:
-  checkout:
+  move-to-master:
     runs-on: ubuntu-latest
+    
     steps:
-      - run: ls -al
-      - uses: actions/checkout@v4.1.1
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Switch to Master Branch
+      run: |
+        git checkout master
+        git merge development  # 디벨로프먼트 브랜치를 마스터 브랜치로 병합
+        git push origin master  # 변경된 마스터 브랜치를 푸시
+      
