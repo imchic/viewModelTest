@@ -15,6 +15,6 @@ jobs:
       
     - name: Switch to Master Branch
       run: |
-        git checkout master
+        git checkout main
         git merge development  # 디벨로프먼트 브랜치를 마스터 브랜치로 병합
-        git push origin master  # 변경된 마스터 브랜치를 푸시
+        git push origin main  # 변경된 마스터 브랜치를 푸시
