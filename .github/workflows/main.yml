@@ -1,14 +1,14 @@
 name: Pre-Push Workflow
 
 on:
-  workflow_run:
-    workflows: ["development"]
-    types:
-      - requested
+  push:
+    branches:
+      - master
 
 jobs:
-  echo-hello-world:
+  lint:
+    name: 'test'
     runs-on: ubuntu-latest
-    name: Echo Hello World Job
     steps:
-        echo Hello, world!
+      - name: 'Checkout Repo'
+        uses: actions/checkout@v4.1.1
