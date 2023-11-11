@@ -2,21 +2,33 @@ name: reviewdog
 on: [pull_request]
 
 jobs:
-  ktlint:
-    name: Check Code Quality
+  reviewdog-check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repo
-        uses: actions/checkout@4.1.1
-        with:
-          fetch-depth: 1
+    - name: Checkout Repository
+      uses: actions/checkout@v4.1.1
 
-      - name: ktlint
-        uses: ScaCap/action-ktlint@master
-        with:
-          github_token: $
-          reporter: github-pr-review
-          android: true
-          fail_on_error: true
-          level: warning
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
+    - name: Install ktlint
+      run: |
+        curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.42.1/ktlint
+        chmod +x ktlint
+        sudo mv ktlint /usr/local/bin/
+
+    - name: Run ktlint
+      run: |
+        ktlint --reporter=checkstyle --output=ktlint-checkstyle-report.xml || true
+
+    - name: Install reviewdog
+      run: |
+        curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/main/install.sh| sh -s -- -b /usr/local/bin
+
+    - name: Run reviewdog
+      run: |
+        reviewdog -reporter=checkstyle -f=ktlint-checkstyle-report.xm
