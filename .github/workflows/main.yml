@@ -1,14 +1,22 @@
-name: Pre-Push Workflow
-
-on:
-  push:
-    branches:
-      - master
+name: reviewdog
+on: [pull_request]
 
 jobs:
-  lint:
-    name: 'test'
+  ktlint:
+    name: Check Code Quality
     runs-on: ubuntu-latest
+
     steps:
-      - name: 'Checkout Repo'
-        uses: actions/checkout@v4.1.1
+      - name: Clone repo
+        uses: actions/checkout@4.1.1
+        with:
+          fetch-depth: 1
+
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
+        with:
+          github_token: $
+          reporter: github-pr-review
+          android: true
+          fail_on_error: true
+          level: warning
