@@ -7,17 +7,9 @@ on:
       - requested
 
 jobs:
-  pre-push:
+  echo-hello-world:
     runs-on: ubuntu-latest
-
+    name: Echo Hello World Job
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4.1.1
-
-      - name: Run Pre-Push Script
-        run: |
-          # 이 부분에 푸시 이벤트 전에 실행하고 싶은 스크립트를 추가합니다.
-          # 예를 들면, 코드 검증, 테스트, 또는 커스텀 작업을 수행할 수 있습니다.
-          echo "Running pre-push script..."
-
-          # 실패 조건이 있는 경우, 다음 라인에 exit 1 또는 다른 적절한 코드를 추가합니다.
+      - uses: actions/checkout@v4.1.1
+      - run: echo Hello World!
